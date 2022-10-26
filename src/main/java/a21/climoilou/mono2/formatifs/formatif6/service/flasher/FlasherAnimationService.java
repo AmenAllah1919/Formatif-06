@@ -1,24 +1,33 @@
 package a21.climoilou.mono2.formatifs.formatif6.service.flasher;
 
 import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public class FlasherAnimationService extends Service<ScheduledService> {
+import java.util.Random;
+
+public class FlasherAnimationService extends ScheduledService {
 
 
     @Override
-    protected Task<ScheduledService> createTask() {
+    protected Task<Boolean> createTask() {
         return new FlasherAnimationTask();
     }
 
 
-    private class FlasherAnimationTask extends Task<ScheduledService> {
+    private class FlasherAnimationTask extends Task<Boolean> {
+        int n = 0;
 
         @Override
-        protected ScheduledService call() throws Exception {
+        protected Boolean call() throws Exception {
+            boolean estValide = false;
+            if (n == 0) {
+                n++;
+                estValide = true;
+            } else {
+                n--;
+            }
 
-            return null;
+            return estValide;
         }
     }
 
