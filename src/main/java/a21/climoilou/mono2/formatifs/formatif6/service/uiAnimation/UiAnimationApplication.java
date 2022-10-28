@@ -13,6 +13,28 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class UiAnimationApplication extends Application {
+
+    TextField xTextField;
+    TextField yTextField;
+    TextField largeurTextField;
+    TextField longueurTextField;
+
+    public TextField getxTextField() {
+        return xTextField;
+    }
+
+    public TextField getyTextField() {
+        return yTextField;
+    }
+
+    public TextField getLargeurTextField() {
+        return largeurTextField;
+    }
+
+    public TextField getLongueurTextField() {
+        return longueurTextField;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         HBox root = new HBox();
@@ -20,23 +42,14 @@ public class UiAnimationApplication extends Application {
         root.setAlignment(Pos.CENTER);
 
         Button bouton = new Button("Va et ne reviens plus !");
-        TextField xTextField = new TextField("200");
-        TextField yTextField = new TextField("200");
-        TextField largeurTextField = new TextField("200");
-        TextField longueurTextField = new TextField("200");
-
+        xTextField = new TextField("200");
+        yTextField = new TextField("200");
+        largeurTextField = new TextField("200");
+        longueurTextField = new TextField("200");
 
         //service
 
-
-
-
-
-        root.getChildren().addAll(bouton,
-                xTextField,
-                yTextField,
-                largeurTextField,
-                longueurTextField);
+        root.getChildren().addAll(bouton, xTextField, yTextField, largeurTextField, longueurTextField);
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

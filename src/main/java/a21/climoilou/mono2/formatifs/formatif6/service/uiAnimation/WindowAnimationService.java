@@ -1,11 +1,12 @@
 package a21.climoilou.mono2.formatifs.formatif6.service.uiAnimation;
 
 import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 import java.util.Objects;
 
-public class WindowAnimationService  {
+public class WindowAnimationService extends Service<WindowAnimationService.LocationTaille> {
 
     private LocationTaille souhaitee;
     private LocationTaille actuelle;
@@ -13,9 +14,25 @@ public class WindowAnimationService  {
     private double locationIncrement = 5;
 
 
+    UiAnimationApplication uiAnimationApplication = new UiAnimationApplication();
 
+    @Override
+    protected Task<LocationTaille> createTask() {
 
-    public static class  LocationTaille {
+        return new WindowAnimationTask();
+    }
+
+    private class WindowAnimationTask extends Task<LocationTaille> {
+
+        @Override
+        protected LocationTaille call() throws Exception {
+//            souhaitee = new LocationTaille();
+//            actuelle = new LocationTaille();
+            return null;
+        }
+    }
+
+    public static class LocationTaille {
         private double x;
         private double y;
         private double largeur;
