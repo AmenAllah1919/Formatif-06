@@ -12,11 +12,21 @@ import java.util.concurrent.Executors;
 
 
 public class ProjectileApplication extends Application {
+
     private ExecutorService service = Executors.newFixedThreadPool(20);
+    private ProjectileService projectileService = new ProjectileService();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         AnchorPane root = new AnchorPane();
+        Circle circle = new Circle();
+        circle.setFill(Color.BLACK);
+        circle.setRadius(25);
+        root.getChildren().add(circle);
+        AnchorPane.setBottomAnchor(circle, 0.0);
+        AnchorPane.setLeftAnchor(circle, 0.0);
+
+        projectileService.createTask();
 
 
         primaryStage.setScene(new Scene(root));
@@ -24,10 +34,6 @@ public class ProjectileApplication extends Application {
         primaryStage.setHeight(1000);
 
         // Service de projectile
-
-
-
-
 
 
         primaryStage.show();
