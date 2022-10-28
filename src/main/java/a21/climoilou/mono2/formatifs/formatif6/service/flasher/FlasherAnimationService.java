@@ -20,11 +20,14 @@ public class FlasherAnimationService extends ScheduledService {
         @Override
         protected Boolean call() throws Exception {
             boolean estValide = false;
-            if (n == 0) {
-                n++;
-                estValide = true;
-            } else {
+            if (n != 0) {
                 n--;
+                estValide = true;
+                updateValue(estValide);
+
+            } else {
+                updateValue(estValide);
+                n++;
             }
 
             return estValide;
