@@ -1,13 +1,15 @@
 package a21.climoilou.mono2.formatifs.formatif6.service.uiAnimation;
 
+import a21.climoilou.mono2.formatifs.formatif6.service.SlowHelper;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextField;
 
+import java.sql.Time;
 import java.util.Objects;
 
-public class WindowAnimationService extends Service<WindowAnimationService.LocationTaille> {
+public class WindowAnimationService extends ScheduledService {
 
 
     private double tailleIncrement = 5;
@@ -39,12 +41,25 @@ public class WindowAnimationService extends Service<WindowAnimationService.Locat
 
         @Override
         protected LocationTaille call() throws Exception {
-            actuelle.setX(souhaitee.getX());
-            actuelle.setY(souhaitee.getY());
-            actuelle.setLargeur(souhaitee.getLargeur());
-            actuelle.setLongueur(souhaitee.getLongueur());
-            return null;
+            actuelle.setX(comparerDeuxvaleurs(actuelle.getX(), souhaitee.getX(), locationIncrement));
+            actuelle.setY(comparerDeuxvaleurs(actuelle.getY(), souhaitee.getY(), locationIncrement));
+            actuelle.setLargeur(comparerDeuxvaleurs(actuelle.getLargeur(), souhaitee.getLargeur(), tailleIncrement));
+            actuelle.setLongueur(comparerDeuxvaleurs(actuelle.getLongueur(), souhaitee.getLongueur(), tailleIncrement));
+            if (actuelle.equals(souhaitee)) {
+                cancel();
+            }
+            return actuelle;
         }
+
+        private double comparerDeuxvaleurs(double valeurActuel, double valeurVoulu, Double step) {
+            if ((valeurVoulu - valeurActuel) > step) {
+                return valeurActuel + step;
+            } else if ((valeurVoulu - valeurActuel) < -step) {
+                return valeurActuel - step;
+            } else
+                return valeurVoulu;
+        }
+
     }
 
     public static class LocationTaille {

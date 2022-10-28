@@ -19,7 +19,7 @@ public class UiAnimationApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         HBox root = new HBox();
-        root.setPrefWidth(300);
+        root.setPrefWidth(720);
         root.setAlignment(Pos.CENTER);
 
         Button bouton = new Button("Va et ne reviens plus !");
@@ -29,24 +29,26 @@ public class UiAnimationApplication extends Application {
         TextField longueurTextField = new TextField("200");
 
         //service
-
-
+        animationService.setPeriod(Duration.minutes(0.001));
         bouton.setOnAction(event -> {
+            animationService.setActuelle(primaryStage.getX(), primaryStage.getY(), primaryStage.getWidth(), primaryStage.getHeight());
             animationService.setSouhaitee(stringEnDouble(xTextField), stringEnDouble(yTextField), stringEnDouble(largeurTextField), stringEnDouble(longueurTextField));
             animationService.restart();
         });
 
         animationService.setOnSucceeded(event -> {
-            primaryStage.setX(stringEnDouble(xTextField));
-            primaryStage.setY(stringEnDouble(yTextField));
-            primaryStage.setWidth(stringEnDouble(largeurTextField));
-            primaryStage.setHeight(stringEnDouble(longueurTextField));
+            WindowAnimationService.LocationTaille valueTemp = (WindowAnimationService.LocationTaille) animationService.getLastValue();
+            if (valueTemp != null) {
+                primaryStage.setX(valueTemp.getX());
+                primaryStage.setY(valueTemp.getY());
+                primaryStage.setWidth(valueTemp.getLargeur());
+                primaryStage.setHeight(valueTemp.getLongueur());
+            }
         });
 
         root.getChildren().addAll(bouton, xTextField, yTextField, largeurTextField, longueurTextField);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-//        animationService.setActuelle(primaryStage.getX(), primaryStage.getY(), primaryStage.getWidth(), primaryStage.getHeight());
 
     }
 
