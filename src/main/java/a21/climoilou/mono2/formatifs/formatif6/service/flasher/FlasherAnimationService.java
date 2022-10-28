@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class FlasherAnimationService extends ScheduledService {
 
+    private int n = 0;
 
     @Override
     protected Task<Boolean> createTask() {
@@ -15,7 +16,7 @@ public class FlasherAnimationService extends ScheduledService {
 
 
     private class FlasherAnimationTask extends Task<Boolean> {
-        int n = 0;
+
 
         @Override
         protected Boolean call() throws Exception {
@@ -31,6 +32,7 @@ public class FlasherAnimationService extends ScheduledService {
             }
 
             return estValide;
+
         }
     }
 

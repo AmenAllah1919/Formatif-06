@@ -14,26 +14,7 @@ import javafx.util.Duration;
 
 public class UiAnimationApplication extends Application {
 
-    TextField xTextField;
-    TextField yTextField;
-    TextField largeurTextField;
-    TextField longueurTextField;
-
-    public TextField getxTextField() {
-        return xTextField;
-    }
-
-    public TextField getyTextField() {
-        return yTextField;
-    }
-
-    public TextField getLargeurTextField() {
-        return largeurTextField;
-    }
-
-    public TextField getLongueurTextField() {
-        return longueurTextField;
-    }
+    WindowAnimationService animationService = new WindowAnimationService();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -42,18 +23,35 @@ public class UiAnimationApplication extends Application {
         root.setAlignment(Pos.CENTER);
 
         Button bouton = new Button("Va et ne reviens plus !");
-        xTextField = new TextField("200");
-        yTextField = new TextField("200");
-        largeurTextField = new TextField("200");
-        longueurTextField = new TextField("200");
+        TextField xTextField = new TextField("200");
+        TextField yTextField = new TextField("200");
+        TextField largeurTextField = new TextField("200");
+        TextField longueurTextField = new TextField("200");
 
         //service
 
-        root.getChildren().addAll(bouton, xTextField, yTextField, largeurTextField, longueurTextField);
 
+        bouton.setOnAction(event -> {
+            animationService.setSouhaitee(stringEnDouble(xTextField), stringEnDouble(yTextField), stringEnDouble(largeurTextField), stringEnDouble(longueurTextField));
+            animationService.restart();
+        });
+
+        animationService.setOnSucceeded(event -> {
+            primaryStage.setX(stringEnDouble(xTextField));
+            primaryStage.setY(stringEnDouble(yTextField));
+            primaryStage.setWidth(stringEnDouble(largeurTextField));
+            primaryStage.setHeight(stringEnDouble(longueurTextField));
+        });
+
+        root.getChildren().addAll(bouton, xTextField, yTextField, largeurTextField, longueurTextField);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+//        animationService.setActuelle(primaryStage.getX(), primaryStage.getY(), primaryStage.getWidth(), primaryStage.getHeight());
 
+    }
+
+    public Double stringEnDouble(TextField textField) {
+        return Double.valueOf(textField.getText());
     }
 
 

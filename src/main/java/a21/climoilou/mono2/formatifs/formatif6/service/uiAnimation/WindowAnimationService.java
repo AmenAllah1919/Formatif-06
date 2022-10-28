@@ -3,18 +3,31 @@ package a21.climoilou.mono2.formatifs.formatif6.service.uiAnimation;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.control.TextField;
 
 import java.util.Objects;
 
 public class WindowAnimationService extends Service<WindowAnimationService.LocationTaille> {
 
-    private LocationTaille souhaitee;
-    private LocationTaille actuelle;
+
     private double tailleIncrement = 5;
     private double locationIncrement = 5;
+    private LocationTaille souhaitee = new LocationTaille(0, 0, 0, 0);
+    private LocationTaille actuelle = new LocationTaille(0, 0, 0, 0);
 
+    public void setSouhaitee(double x, double y, double largeur, double longueur) {
+        this.souhaitee.setX(x);
+        this.souhaitee.setY(y);
+        this.souhaitee.setLargeur(largeur);
+        this.souhaitee.setLongueur(longueur);
+    }
 
-    UiAnimationApplication uiAnimationApplication = new UiAnimationApplication();
+    public void setActuelle(double x, double y, double largeur, double longueur) {
+        this.actuelle.setX(x);
+        this.actuelle.setY(y);
+        this.actuelle.setLargeur(largeur);
+        this.actuelle.setLongueur(longueur);
+    }
 
     @Override
     protected Task<LocationTaille> createTask() {
@@ -26,8 +39,10 @@ public class WindowAnimationService extends Service<WindowAnimationService.Locat
 
         @Override
         protected LocationTaille call() throws Exception {
-//            souhaitee = new LocationTaille();
-//            actuelle = new LocationTaille();
+            actuelle.setX(souhaitee.getX());
+            actuelle.setY(souhaitee.getY());
+            actuelle.setLargeur(souhaitee.getLargeur());
+            actuelle.setLongueur(souhaitee.getLongueur());
             return null;
         }
     }

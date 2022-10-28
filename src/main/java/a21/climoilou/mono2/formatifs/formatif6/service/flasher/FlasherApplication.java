@@ -19,7 +19,7 @@ import javafx.util.Duration;
 import java.time.format.DateTimeFormatter;
 
 public class FlasherApplication extends Application {
-    boolean estValide;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         HBox root = new HBox();
@@ -35,22 +35,26 @@ public class FlasherApplication extends Application {
         flasherAnimationService.setPeriod(new Duration(220));
 
 
-
         flasherAnimationService.setOnSucceeded(event1 -> {
 
-            estValide = (boolean) flasherAnimationService.getLastValue();
+            Boolean estValide = (Boolean) flasherAnimationService.getLastValue();
+            if (estValide != null) {
+                if (estValide == true) {
+                    rectangle.setFill(Color.WHITE);
+                } else {
+                    rectangle.setFill(Color.BLACK);
+                }
+            }
+
         });
 
         bouton.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             flasherAnimationService.restart();
-            while (event.isPrimaryButtonDown()) {
 
-                if (estValide == true) {
-                    rectangle.setFill(Color.WHITE);
-                } else {
-                    rectangle.setFill(Color.WHITE);
-                }
-            }
+        });
+        bouton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            flasherAnimationService.cancel();
+
         });
 
         root.getChildren().addAll(bouton, rectangle);
