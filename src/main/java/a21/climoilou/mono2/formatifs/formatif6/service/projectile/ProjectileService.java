@@ -1,59 +1,63 @@
 package a21.climoilou.mono2.formatifs.formatif6.service.projectile;
 
+import a21.climoilou.mono2.formatifs.formatif6.service.SlowHelper;
+import javafx.application.Application;
+import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
+import java.sql.Time;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
-public class ProjectileService extends Service<ProjectileService.Etat> {
+public class ProjectileService extends ScheduledService {
 
-    private Etat etatInitial;
+    private Etat etatInitial = new Etat();
     private final double cadreLargeur = 1000;
     private final double cadreHauteur = 800;
+    long tempsInitial = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 
     @Override
     protected Task createTask() {
-        return null;
+        return new ProjectileTask();
     }
 
     private class ProjectileTask extends Task<Etat> {
-        Long tempsInitial = System.currentTimeMillis();
-
 
         @Override
         protected Etat call() throws Exception {
 
+            Etat cloneEtatInitial = (Etat) etatInitial.clone();
 
             double deltaTemps = trouverDeltaT();
-            //
-            Etat nouvelEtat = (Etat) etatInitial.clone();
-
-            nouvelEtat.setAy(trouverAY(etatInitial.getFy(), etatInitial.masse));
-            nouvelEtat.setVy(trouverVYFinal(etatInitial.getVy(), nouvelEtat.getAy(), deltaTemps));
-            nouvelEtat.setY(trouverY(deltaTemps, nouvelEtat.getVy(), etatInitial.getY()));
-
-            tempsInitial = System.currentTimeMillis();
-
-            etatInitial = nouvelEtat;
-            return nouvelEtat;
+            tempsInitial = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+            if (etatInitial.getX() != cadreLargeur && etatInitial.getY() != 0) {
+                SlowHelper.slow(15);
+                etatInitial.setVy(trouverVYFinal(cloneEtatInitial.getVy(), cloneEtatInitial.getAy(), deltaTemps));
+                etatInitial.setY(trouverY(cloneEtatInitial.getY(), cloneEtatInitial.getVy(), deltaTemps));
+                etatInitial.setX(trouverXFinal(cloneEtatInitial.getX(), cloneEtatInitial.getVx(), deltaTemps));
+            } else {
+                cancel();
+            }
+            return etatInitial;
         }
+
         private double trouverDeltaT() {
-            return System.currentTimeMillis() - tempsInitial;
+            return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) - tempsInitial;
         }
 
-        private static double trouverAY(double fy, double m) {
-            double ay = fy / m;
-            return ay;
+        private static double trouverXFinal(double xInitial, double vx, double dt) {
+            double xFinal = xInitial + (vx * dt);
+            return xFinal;
         }
 
-        private static double trouverVYFinal(double vyinitial, double ay, double dt) {
-            double vyFinal = vyinitial + (ay * dt);
+        private static double trouverVYFinal(double vyInitial, double ay, double dt) {
+            double vyFinal = vyInitial + (ay * dt);
             return vyFinal;
         }
 
 
-
-        private static double trouverY(double dt, double vy, double yInitial) {
+        private static double trouverY(double yInitial, double vy, double dt) {
             double yFinal = (vy * dt) + yInitial;
             return yFinal;
         }

@@ -31,10 +31,17 @@ public class ProjectileApplication extends Application {
 
         primaryStage.setScene(new Scene(root));
         primaryStage.setWidth(1000);
-        primaryStage.setHeight(1000);
+        primaryStage.setHeight(800);
 
         // Service de projectile
-
+        projectileService.start();
+        projectileService.setOnSucceeded(event -> {
+            ProjectileService.Etat etat = (ProjectileService.Etat) projectileService.getLastValue();
+            if (etat != null) {
+                AnchorPane.setLeftAnchor(circle, etat.getX());
+                AnchorPane.setBottomAnchor(circle, etat.getY());
+            }
+        });
 
         primaryStage.show();
 
