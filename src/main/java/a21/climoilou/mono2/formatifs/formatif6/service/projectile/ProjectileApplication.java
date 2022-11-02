@@ -2,6 +2,7 @@ package a21.climoilou.mono2.formatifs.formatif6.service.projectile;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -30,7 +31,7 @@ public class ProjectileApplication extends Application {
 
 
         primaryStage.setScene(new Scene(root));
-        primaryStage.setWidth(1000);
+        primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
 
         // Service de projectile
@@ -38,9 +39,20 @@ public class ProjectileApplication extends Application {
         projectileService.setOnSucceeded(event -> {
             ProjectileService.Etat etat = (ProjectileService.Etat) projectileService.getLastValue();
             if (etat != null) {
-                AnchorPane.setLeftAnchor(circle, etat.getX());
-                AnchorPane.setBottomAnchor(circle, etat.getY());
+                if (etat.getX() <= 1500 && etat.getY() >= 0) {
+                    AnchorPane.setLeftAnchor(circle, etat.getX());
+                    AnchorPane.setBottomAnchor(circle, etat.getY());
+                } else {
+                    projectileService.cancel();
+                }
             }
+        });
+
+        projectileService.setOnCancelled(event -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Amen Allah Ben Cheikh");
+            alert.setHeaderText("La simulation est terminée");
+            alert.showAndWait();
         });
 
         primaryStage.show();

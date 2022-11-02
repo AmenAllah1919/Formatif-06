@@ -31,14 +31,13 @@ public class ProjectileService extends ScheduledService {
 
             double deltaTemps = trouverDeltaT();
             tempsInitial = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-            if (etatInitial.getX() != cadreLargeur && etatInitial.getY() != 0) {
-                SlowHelper.slow(15);
-                etatInitial.setVy(trouverVYFinal(cloneEtatInitial.getVy(), cloneEtatInitial.getAy(), deltaTemps));
-                etatInitial.setY(trouverY(cloneEtatInitial.getY(), cloneEtatInitial.getVy(), deltaTemps));
-                etatInitial.setX(trouverXFinal(cloneEtatInitial.getX(), cloneEtatInitial.getVx(), deltaTemps));
-            } else {
-                cancel();
-            }
+
+            SlowHelper.slow(15);
+
+            etatInitial.setVy(trouverVYFinal(cloneEtatInitial.getVy(), cloneEtatInitial.getAy(), deltaTemps));
+            etatInitial.setY(trouverY(cloneEtatInitial.getY(), cloneEtatInitial.getVy(), deltaTemps));
+            etatInitial.setX(trouverXFinal(cloneEtatInitial.getX(), cloneEtatInitial.getVx(), deltaTemps));
+
             return etatInitial;
         }
 
@@ -175,10 +174,10 @@ public class ProjectileService extends ScheduledService {
 
 
         public Etat() {
-            this.x = 15;
-            this.y = 15;
-            this.vx = 15;
-            this.vy = 50;
+            this.x = 0;
+            this.y = 0;
+            this.vx = 75;
+            this.vy = 75;
             this.ax = 0;
             this.ay = -9.8;
             this.masse = 1;
